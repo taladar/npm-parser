@@ -33,3 +33,9 @@ features = ["derive"]
 
 [dependencies.serde_json]
 version = "~1.0"
+
+[dependencies.serde_path_to_error]
+version = "~0.1"
+
+[dev-dependencies.tracing-test]
+version = "~0.2"

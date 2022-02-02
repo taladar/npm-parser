@@ -1,26 +1,8 @@
-//! This parses the outdated of composer-outdated
-use thiserror::Error;
-
+//! This parses the output of composer-outdated
 use std::collections::BTreeMap;
 use std::process::Command;
 use std::str::from_utf8;
 use tracing::{debug, warn};
-
-/// Error type for npm_parser
-#[derive(Debug, Error)]
-pub enum Error {
-    /// This means something went wrong when we were parsing the JSON output
-    /// of the program
-    #[error("Error parsing JSON: {0}")]
-    SerdeJsonError(#[from] serde_json::Error),
-    /// This means the output of the program contained some string that was not
-    /// valid UTF-8
-    #[error("Error interpreting program output as UTF-8: {0}")]
-    Utf8Error(#[from] std::str::Utf8Error),
-    /// This is likely to be an error when executing the program using std::process
-    #[error("I/O Error: {0}")]
-    StdIoError(#[from] std::io::Error),
-}
 
 /// Outer structure for parsing npm-outdated output
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
@@ -80,7 +62,7 @@ impl std::fmt::Display for IndicatedUpdateRequirement {
 }
 
 /// main entry point for the npm-oudated call
-pub fn outdated() -> Result<(IndicatedUpdateRequirement, NpmOutdatedData), Error> {
+pub fn outdated() -> Result<(IndicatedUpdateRequirement, NpmOutdatedData), crate::Error> {
     let mut cmd = Command::new("npm");
 
     cmd.args(["outdated", "--json", "--long"]);
@@ -112,11 +94,12 @@ pub fn outdated() -> Result<(IndicatedUpdateRequirement, NpmOutdatedData), Error
 #[cfg(test)]
 mod test {
     use super::*;
+    use crate::Error;
 
-    /// this test requires a composer.json and composer.lock in the main crate
+    /// this test requires a package.json and package-lock.json in the main crate
     /// directory (working dir of the tests)
     #[test]
-    fn test_run_composer_outdated() -> Result<(), Error> {
+    fn test_run_npm_outdated() -> Result<(), Error> {
         outdated()?;
         Ok(())
     }
