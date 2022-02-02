@@ -190,9 +190,9 @@ pub fn audit() -> Result<(IndicatedUpdateRequirement, NpmAuditData), crate::Erro
     }
 
     let update_requirement = if output.status.success() {
-        IndicatedUpdateRequirement::UpdateRequired
-    } else {
         IndicatedUpdateRequirement::UpToDate
+    } else {
+        IndicatedUpdateRequirement::UpdateRequired
     };
 
     let json_str = from_utf8(&output.stdout)?;

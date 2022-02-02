@@ -81,9 +81,9 @@ pub fn outdated() -> Result<(IndicatedUpdateRequirement, NpmOutdatedData), crate
     }
 
     let update_requirement = if output.status.success() {
-        IndicatedUpdateRequirement::UpdateRequired
-    } else {
         IndicatedUpdateRequirement::UpToDate
+    } else {
+        IndicatedUpdateRequirement::UpdateRequired
     };
 
     let json_str = from_utf8(&output.stdout)?;
