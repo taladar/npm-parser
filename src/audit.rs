@@ -12,11 +12,11 @@ use tracing::{debug, warn};
 #[serde(rename_all = "camelCase")]
 pub struct NpmAuditData {
     /// version of the audit report
-    audit_report_version: u32,
+    pub audit_report_version: u32,
     /// Vulnerabilities found in dependencies
-    vulnerabilities: BTreeMap<String, VulnerablePackage>,
+    pub vulnerabilities: BTreeMap<String, VulnerablePackage>,
     /// vulnerability and dependency counts
-    metadata: Metadata,
+    pub metadata: Metadata,
 }
 
 /// Severity of vulnerabilities
@@ -42,21 +42,21 @@ pub enum Severity {
 #[serde(rename_all = "camelCase")]
 pub struct VulnerablePackage {
     /// Package name
-    name: String,
+    pub name: String,
     /// The severity of the vulnerabilities
-    severity: Severity,
+    pub severity: Severity,
     /// is this a direct dependency
-    is_direct: bool,
+    pub is_direct: bool,
     /// the vulnerabilities that make this a vulnerable package
-    via: Vec<Vulnerability>,
+    pub via: Vec<Vulnerability>,
     /// not sure what htis means
-    effects: Vec<String>,
+    pub effects: Vec<String>,
     /// affected version range
-    range: String,
+    pub range: String,
     /// not sure what this means
-    nodes: Vec<String>,
+    pub nodes: Vec<String>,
     /// is there a fix available
-    fix_available: Fix,
+    pub fix_available: Fix,
 }
 
 /// a single vulnerability
@@ -106,26 +106,26 @@ pub enum Fix {
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct Metadata {
     /// Vulnerability counts
-    vulnerabilities: VulnerabilityCounts,
+    pub vulnerabilities: VulnerabilityCounts,
     /// Dependency counts
-    dependencies: DependencyCounts,
+    pub dependencies: DependencyCounts,
 }
 
 /// The vulnerability and dependency counts returned by npm-audit
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 pub struct VulnerabilityCounts {
     /// Number of total vulnerabilities
-    total: u32,
+    pub total: u32,
     /// Number of info level vulnerabilities
-    info: u32,
+    pub info: u32,
     /// Number of low level vulnerabilities
-    low: u32,
+    pub low: u32,
     /// Number of moderate level vulnerabilities
-    moderate: u32,
+    pub moderate: u32,
     /// Number of high level vulnerabilities
-    high: u32,
+    pub high: u32,
     /// Number of critical level vulnerabilities
-    critical: u32,
+    pub critical: u32,
 }
 
 /// The vulnerability and dependency counts returned by npm-audit
@@ -133,19 +133,19 @@ pub struct VulnerabilityCounts {
 #[serde(rename_all = "camelCase")]
 pub struct DependencyCounts {
     /// Total number of dependencies
-    total: u32,
+    pub total: u32,
     /// Number of production dependencies
-    prod: u32,
+    pub prod: u32,
     /// Number of development dependencies
-    dev: u32,
+    pub dev: u32,
     /// Number of optional dependencies
-    optional: u32,
+    pub optional: u32,
     /// Number of peer dependencies
     ///
     /// see <https://nodejs.org/es/blog/npm/peer-dependencies/>
-    peer: u32,
+    pub peer: u32,
     /// Number of optional peer dependencies
-    peer_optional: u32,
+    pub peer_optional: u32,
 }
 
 /// What the exit code indicated about required updates

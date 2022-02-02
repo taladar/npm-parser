@@ -6,7 +6,7 @@ use tracing::{debug, warn};
 
 /// Outer structure for parsing npm-outdated output
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
-pub struct NpmOutdatedData(BTreeMap<String, PackageStatus>);
+pub struct NpmOutdatedData(pub BTreeMap<String, PackageStatus>);
 
 /// Inner, per-package structure when parsing npm-outdated output
 ///
