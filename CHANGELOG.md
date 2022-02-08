@@ -1,3 +1,10 @@
+## 0.2
+
+### Added
+
+Add support for npm audit report version 1
+Make homepage optional in npm outdated
+
 ## 0.1.2
 
 ### Fixed
