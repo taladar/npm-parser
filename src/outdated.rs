@@ -29,14 +29,18 @@ pub struct PackageStatus {
     /// where in the physical tree the package is located.
     pub location: Option<String>,
     /// shows which package depends on the displayed dependency
-    pub dependent: String,
+    ///
+    /// optional since it is new between npm version 6 and 8
+    pub dependent: Option<String>,
     /// tells you whether this package is a dependency or a dev/peer/optional
     /// dependency. Packages not included in package.json are always marked
     /// dependencies.
     #[serde(rename = "type")]
     pub package_type: String,
     /// the homepage value contained in the package's packument
-    pub homepage: String,
+    ///
+    /// optional since it is not included in all npm versions
+    pub homepage: Option<String>,
 }
 
 /// What the exit code indicated about required updates
@@ -87,7 +91,8 @@ pub fn outdated() -> Result<(IndicatedUpdateRequirement, NpmOutdatedData), crate
     };
 
     let json_str = from_utf8(&output.stdout)?;
-    let data: NpmOutdatedData = serde_json::from_str(json_str)?;
+    let jd = &mut serde_json::Deserializer::from_str(json_str);
+    let data: NpmOutdatedData = serde_path_to_error::deserialize(jd)?;
     Ok((update_requirement, data))
 }
 
