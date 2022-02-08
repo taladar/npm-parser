@@ -37,6 +37,8 @@ pub struct NpmAuditDataV1 {
     ///
     /// only included in some versions of npm audit
     pub muted: Option<Vec<String>>,
+    /// vulnerability and dependency counts
+    pub metadata: MetadataV1,
 }
 
 /// helper to parse module paths

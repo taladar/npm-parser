@@ -1,4 +1,10 @@
-## 0.2
+## 0.2.1
+
+## Fixed
+
+Forgot to include metadata field in the version 1 report
+
+## 0.2.0
 
 ### Added
 
