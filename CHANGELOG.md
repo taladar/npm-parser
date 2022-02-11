@@ -1,3 +1,7 @@
+## 0.2.2
+
+Fix some documentation where it said composer instead of npm
+
 ## 0.2.1
 
 ## Fixed

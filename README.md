@@ -1,3 +1,3 @@
 # npm-parser
 
-Parses the JSON output of npm outdated and composer audit
+Parses the JSON output of npm outdated and npm audit

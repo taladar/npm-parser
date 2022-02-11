@@ -1,4 +1,4 @@
-//! This parses the output of composer-outdated
+//! This parses the output of npm-outdated
 use std::collections::BTreeMap;
 use std::process::Command;
 use std::str::from_utf8;

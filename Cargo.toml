@@ -1,9 +1,9 @@
 [package]
 name = "npm-parser"
-description = "Parses the JSON output of npm outdated and composer audit"
+description = "Parses the JSON output of npm outdated and npm audit"
 readme = "README.md"
 license = "MIT/Apache-2.0"
-version = "0.2.1"
+version = "0.2.2"
 authors = ["Matthias Hörmann <mhoermann@gmail.com>"]
 edition = "2021"
 repository = "https://github.com/taladar/npm-parser"
