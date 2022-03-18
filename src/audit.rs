@@ -181,7 +181,7 @@ pub struct Advisory {
     /// a human readable recommendation on how to fix this
     pub recommendation: String,
     /// a CWE (common weakness enumeration) identifier
-    pub cwe: Option<String>,
+    pub cwe: Option<Vec<String>>,
     /// who found this security issue
     pub found_by: Option<String>,
     /// who reported this security issue

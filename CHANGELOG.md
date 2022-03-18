@@ -1,3 +1,10 @@
+## 0.2.3
+
+## Fixed
+
+Fix parsing of field cwe in npm audit advisories (was treated as string but is array)
+in version 1 report
+
 ## 0.2.2
 
 Fix some documentation where it said composer instead of npm
