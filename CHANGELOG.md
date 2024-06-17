@@ -1,3 +1,8 @@
+## 0.3.2
+
+update versions dependency
+update deny.toml to new format
+
 ## 0.3.1
 
 update versions dependency
