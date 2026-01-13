@@ -2,11 +2,10 @@
 
 set -e -u
 
-# shellcheck disable=SC1090
+# shellcheck disable=SC1090,SC1091
 source "${NVM_DIR}/nvm.sh"
 
-for version in 8 9 10 12 14 16
-do
+for version in 8 9 10 12 14 16; do
   nvm use "v${version}"
   set +e
   if [[ "${version}" != "9" ]]; then

@@ -55,17 +55,21 @@ pub enum IndicatedUpdateRequirement {
 impl std::fmt::Display for IndicatedUpdateRequirement {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            IndicatedUpdateRequirement::UpToDate => {
+            Self::UpToDate => {
                 write!(f, "up-to-date")
             }
-            IndicatedUpdateRequirement::UpdateRequired => {
+            Self::UpdateRequired => {
                 write!(f, "update-required")
             }
         }
     }
 }
 
-/// main entry point for the npm-oudated call
+/// main entry point for the npm-outdated call
+///
+/// # Errors
+///
+/// fails if the call to npm outdated fails or if the output could not be parsed
 pub fn outdated() -> Result<(IndicatedUpdateRequirement, NpmOutdatedData), crate::Error> {
     let mut cmd = Command::new("npm");
 

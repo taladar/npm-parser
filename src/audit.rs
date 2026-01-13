@@ -2,7 +2,7 @@
 //!
 //! [npm-audit](https://docs.npmjs.com/cli/v7/commands/npm-audit)
 
-use serde::{Deserialize, Serialize};
+use serde::{Deserialize, Serialize as _};
 use std::collections::BTreeMap;
 use std::process::Command;
 use std::str::from_utf8;
@@ -25,7 +25,7 @@ pub enum NpmAuditData {
 #[derive(Debug, serde::Serialize, serde::Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct NpmAuditDataV1 {
-    /// UUID identitying the run of npm-audit
+    /// UUID identifying the run of npm-audit
     ///
     /// only included in some versions of npm
     pub run_id: Option<String>,
@@ -42,6 +42,10 @@ pub struct NpmAuditDataV1 {
 }
 
 /// helper to parse module paths
+///
+/// # Errors
+///
+/// fails if deserializing the string fails
 pub fn deserialize_module_path<'de, D>(deserializer: D) -> Result<Vec<String>, D::Error>
 where
     D: serde::Deserializer<'de>,
@@ -52,6 +56,10 @@ where
 }
 
 /// helper to serialize module paths
+///
+/// # Errors
+///
+/// fails if serializing the string fails
 pub fn serialize_module_path<S>(xs: &[String], serializer: S) -> Result<S::Ok, S::Error>
 where
     S: serde::Serializer,
@@ -62,6 +70,10 @@ where
 }
 
 /// helper to parse Vec of module paths
+///
+/// # Errors
+///
+/// fails if deserializing a vector of strings fails
 pub fn deserialize_module_path_vec<'de, D>(deserializer: D) -> Result<Vec<Vec<String>>, D::Error>
 where
     D: serde::Deserializer<'de>,
@@ -75,6 +87,10 @@ where
 }
 
 /// helper to serialize Vec of module paths
+///
+/// # Errors
+///
+/// fails if serializing a vector of strings fails
 pub fn serialize_module_path_vec<S>(xxs: &[Vec<String>], serializer: S) -> Result<S::Ok, S::Error>
 where
     S: serde::Serializer,
@@ -86,6 +102,10 @@ where
 
 /// helper to parse created in the correct format
 /// (default time serde implementation seems to use a different format)
+///
+/// # Errors
+///
+/// fails if deserializing a string fails or if parsing that string as a rfc3339 timestamp fails
 pub fn deserialize_rfc3339<'de, D>(deserializer: D) -> Result<time::OffsetDateTime, D::Error>
 where
     D: serde::Deserializer<'de>,
@@ -98,6 +118,10 @@ where
 
 /// helper to serialize created in the correct format
 /// (default time serde implementation seems to use a different format)
+///
+/// # Errors
+///
+/// fails if formatting as an rfc3339 timestamp fails or if serializing a string fails
 pub fn serialize_rfc3339<S>(t: &time::OffsetDateTime, serializer: S) -> Result<S::Ok, S::Error>
 where
     S: serde::Serializer,
@@ -111,6 +135,10 @@ where
 
 /// helper to parse updated and deleted in the correct format
 /// (default time serde implementation seems to use a different format)
+///
+/// # Errors
+///
+/// fails if deserializing a string or parsing it as an rfc3339 timestamp fails
 pub fn deserialize_optional_rfc3339<'de, D>(
     deserializer: D,
 ) -> Result<Option<time::OffsetDateTime>, D::Error>
@@ -131,6 +159,10 @@ where
 
 /// helper to serialize updated and deleted in the correct format
 /// (default time serde implementation seems to use a different format)
+///
+/// # Errors
+///
+/// fails if formatting as an rfc3339 timestamp fails or serializing the result as a string fails
 pub fn serialize_optional_rfc3339<S>(
     t: &Option<time::OffsetDateTime>,
     serializer: S,
@@ -290,7 +322,7 @@ pub enum Action {
 pub struct Resolves {
     /// advisory id
     pub id: u64,
-    /// path of depedencies from current module to affected module
+    /// path of dependencies from current module to affected module
     #[serde(
         serialize_with = "serialize_module_path",
         deserialize_with = "deserialize_module_path"
@@ -334,7 +366,7 @@ pub struct VulnerablePackage {
     pub is_direct: bool,
     /// the vulnerabilities that make this a vulnerable package
     pub via: Vec<Vulnerability>,
-    /// not sure what htis means
+    /// not sure what this means
     pub effects: Vec<String>,
     /// affected version range
     pub range: String,
@@ -481,10 +513,10 @@ pub enum IndicatedUpdateRequirement {
 impl std::fmt::Display for IndicatedUpdateRequirement {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            IndicatedUpdateRequirement::UpToDate => {
+            Self::UpToDate => {
                 write!(f, "up-to-date")
             }
-            IndicatedUpdateRequirement::UpdateRequired => {
+            Self::UpdateRequired => {
                 write!(f, "update-required")
             }
         }
@@ -492,6 +524,14 @@ impl std::fmt::Display for IndicatedUpdateRequirement {
 }
 
 /// main entry point for the npm-audit call
+///
+/// # Errors
+///
+/// fails if the call to npm --version or to npm audit fails or if the result could not be parsed
+///
+/// # Panics
+///
+/// panics if a new, unimplemented report format is encountered
 pub fn audit() -> Result<(IndicatedUpdateRequirement, NpmAuditData), crate::Error> {
     let mut version_cmd = Command::new("npm");
 
@@ -506,6 +546,7 @@ pub fn audit() -> Result<(IndicatedUpdateRequirement, NpmAuditData), crate::Erro
     let report_format = match versions::Versioning::new(version) {
         Some(version) => {
             debug!("Got version {} from npm --version", version);
+            #[expect(clippy::unwrap_used, reason = "parsing a literal should not fail")]
             let audit_report_change = versions::Versioning::new("7.0.0").unwrap();
             if version < audit_report_change {
                 debug!(
@@ -556,6 +597,10 @@ pub fn audit() -> Result<(IndicatedUpdateRequirement, NpmAuditData), crate::Erro
 
     let json_str = from_utf8(&output.stdout)?;
     let jd = &mut serde_json::Deserializer::from_str(json_str);
+    #[expect(
+        clippy::panic,
+        reason = "This can only happen with new npm major versions previously unsupported in this crate"
+    )]
     let data: NpmAuditData = match report_format {
         1 => NpmAuditData::Version1(serde_path_to_error::deserialize::<_, NpmAuditDataV1>(jd)?),
         2 => NpmAuditData::Version2(serde_path_to_error::deserialize::<_, NpmAuditDataV2>(jd)?),

@@ -5,9 +5,9 @@ set -e -u
 echo "Installing nvm from https://github.com/nvm-sh/nvm"
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 
-export NVM_DIR="$HOME/.nvm"
-# shellcheck disable=SC1090
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+export NVM_DIR="${HOME}/.nvm"
+# shellcheck disable=SC1090,SC1091
+[[ -s "${NVM_DIR}/nvm.sh" ]] && \. "${NVM_DIR}/nvm.sh" # This loads nvm
 
 echo "Installing nodejs8 via nvm"
 nvm install v8
