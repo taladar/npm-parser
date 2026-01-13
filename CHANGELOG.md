@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.5 - 2026-01-13 12:04:08Z
+
+### 🚀 Features
+
+- *(release)* Add release.sh and cliff config
+
+### ⚙️ Miscellaneous Tasks
+
+- *(dependencies)* Upgrade dependencies
+
 ## 0.3.4
 
 update dependencies
