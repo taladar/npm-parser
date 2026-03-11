@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.3.6 - 2026-03-11 13:27:21Z
+
+### 🐛 Bug Fixes
+
+- *(lock)* Actually commit Cargo.lock
+- *(release)* Also add committing of Cargo.lock to release.sh
+
+### ⚙️ Miscellaneous Tasks
+
+- *(dependencies)* Update dependencies
+
 ## 0.3.5 - 2026-01-13 12:04:08Z
 
 ### 🚀 Features
