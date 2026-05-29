@@ -13,9 +13,9 @@ cargo set-version --bump "${level}"
 
 version="$(cargo get package.version)"
 
-git cliff --prepend CHANGELOG.md -u -t "ldap_utils_${version}"
+git cliff --prepend CHANGELOG.md -u -t "npm_parser_${version}"
 
-rumdl fmt --fix CHANGELOG.md
+rumdl fmt CHANGELOG.md
 
 cargo build
 
@@ -23,11 +23,11 @@ git add CHANGELOG.md Cargo.toml Cargo.lock
 
 git commit -m "chore(release): Release version ${version}"
 
-git tag "ldap_utils_${version}"
+git tag "npm_parser_${version}"
 
 for remote in $(git remote); do
   git push "${remote}"
-  git push "${remote}" "ldap_utils_${version}"
+  git push "${remote}" "npm_parser_${version}"
 done
 
 cargo publish --dry-run
