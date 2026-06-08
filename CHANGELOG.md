@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.9 - 2026-06-08 12:02:30Z
+
+### ⚙️ Miscellaneous Tasks
+
+- Sync template config with latest rust-templates
+- *(template)* Sync with latest lib template and fix tag prefix
+- *(dependencies)* Update dependencies
+
 ## 0.3.8 - 2026-04-07 14:02:36Z
 
 ### ⚙️ Miscellaneous Tasks
