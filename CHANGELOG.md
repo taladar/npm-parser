@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.4.1 - 2026-06-16 16:38:49Z
+
+### 🐛 Bug Fixes
+
+- Put the Simple fix after the Full one
+- Satisfy strict clippy lints in Fix tests
+
+### 🧪 Testing
+
+- Add tests for Fix
+
 ## 0.4.0 - 2026-06-16 14:35:09Z
 
 ### 🐛 Bug Fixes
