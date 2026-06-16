@@ -635,6 +635,8 @@ pub fn audit() -> Result<(IndicatedUpdateRequirement, NpmAuditData), crate::Erro
 mod test {
     use super::*;
     use crate::Error;
+    use serde_json::json;
+    use std::assert_matches;
     use tracing_test::traced_test;
 
     /// this test requires a package.json and package-lock.json in the main crate
@@ -644,5 +646,21 @@ mod test {
     fn test_run_npm_audit() -> Result<(), Error> {
         audit()?;
         Ok(())
+    }
+
+    #[test]
+    fn test_fix() {
+        let json = json!([
+            true,
+            {"isSemVerMajor": true},
+            {"isSemVerMajor": true, "name": "foo", "version": "1.0"}
+        ]);
+
+        let fixes: Vec<Fix> = serde_json::from_value(json).expect("should parse");
+
+        assert_eq!(fixes.len(), 3);
+        assert_matches!(fixes[0], Fix::BoolOnly(true));
+        assert_matches!(fixes[1], Fix::Simple { .. });
+        assert_matches!(fixes[2], Fix::Full { .. });
     }
 }
