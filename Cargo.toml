@@ -17,6 +17,7 @@ exclude = [".env", "tarpaulin-report.html", "tarpaulin-report.json"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+pretty_assertions = { version = "1.4.1", features = [ "unstable" ] }
 
 [dependencies.futures]
 version = "~0.3"
