@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.0 - 2026-06-16 14:35:09Z
+
+### 🐛 Bug Fixes
+
+- Add some fields and cases
+
 ## 0.3.9 - 2026-06-08 12:02:30Z
 
 ### ⚙️ Miscellaneous Tasks
