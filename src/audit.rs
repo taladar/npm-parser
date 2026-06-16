@@ -398,7 +398,21 @@ pub enum Vulnerability {
         severity: Severity,
         /// the affected version range
         range: String,
+        /// CWE numbers
+        cwe: Option<Vec<String>>,
+        /// CVSS
+        cvss: Option<Cvss>,
     },
+}
+
+/// The CVSS value for a full vulnerability
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Cvss {
+    /// Score
+    pub score: Option<f64>,
+    /// Vector string
+    pub vector_string: Option<String>,
 }
 
 /// a single fix
@@ -407,6 +421,12 @@ pub enum Vulnerability {
 pub enum Fix {
     /// some packages only indicate whether a fix is available or not
     BoolOnly(bool),
+    /// semver major, without detail
+    #[serde(rename_all = "camelCase")]
+    Simple {
+        /// is this a semver major update
+        is_sem_ver_major: bool,
+    },
     /// others provide more details
     #[serde(rename_all = "camelCase")]
     Full {
