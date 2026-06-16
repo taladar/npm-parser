@@ -421,12 +421,6 @@ pub struct Cvss {
 pub enum Fix {
     /// some packages only indicate whether a fix is available or not
     BoolOnly(bool),
-    /// semver major, without detail
-    #[serde(rename_all = "camelCase")]
-    Simple {
-        /// is this a semver major update
-        is_sem_ver_major: bool,
-    },
     /// others provide more details
     #[serde(rename_all = "camelCase")]
     Full {
@@ -434,6 +428,12 @@ pub enum Fix {
         name: String,
         /// the fixed package version
         version: String,
+        /// is this a semver major update
+        is_sem_ver_major: bool,
+    },
+    /// semver major, without detail
+    #[serde(rename_all = "camelCase")]
+    Simple {
         /// is this a semver major update
         is_sem_ver_major: bool,
     },
