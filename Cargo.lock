@@ -91,7 +91,7 @@ dependencies = [
 
 [[package]]
 name = "npm-parser"
-version = "0.4.1"
+version = "0.4.2"
 dependencies = [
  "pretty_assertions",
  "serde",
